@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/DepthTesting.unity
     guid: 7f19b1e23a8e1364abf21f633a9cf7e3
   - enabled: 1
-    path: Assets/XR-AI-Florence2/Scenes/XR-AI-Florence2.unity
+    path: Assets/XR-AI-Florence2/Scenes/XR-AI-ZeroShot.unity
     guid: 020c4275884ab1f4f9365ae529145874
   - enabled: 0
     path: Assets/XR-AI-Florence2/PassthroughCamera/CameraToWorld/CameraToWorld.unity

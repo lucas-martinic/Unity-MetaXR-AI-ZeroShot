@@ -9029,7 +9029,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1601542821
 Transform:
   m_ObjectHideFlags: 0
@@ -9039,7 +9039,7 @@ Transform:
   m_GameObject: {fileID: 1601542819}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.28, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10175,6 +10175,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CameraToWorldCameraCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 1117406282947529136, guid: 5bf474b46cc73474cae478c4b9b8246a, type: 3}
+      propertyPath: m_Name
+      value: ResultImage
+      objectReference: {fileID: 0}
     - target: {fileID: 3538017278138891281, guid: 5bf474b46cc73474cae478c4b9b8246a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -11267,6 +11271,65 @@ Transform:
   m_Children: []
   m_Father: {fileID: 843443317}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1988061440
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1988061442}
+  - component: {fileID: 1988061441}
+  m_Layer: 0
+  m_Name: GoundingDinoController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1988061441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1988061440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e430288aa0b0d34ea9b2d9e3d779d08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  apiConfiguration: {fileID: 11400000, guid: a2c09e6ea8c313c47bb3a941dd9bc60f, type: 2}
+  sourceTexture: {fileID: 1371373118}
+  textPrompt: bike
+  threshold: 0.4
+  resultText: {fileID: 684126037}
+  resultImage: {fileID: 1371373118}
+  boundingBoxContainer: {fileID: 225316806}
+  boundingBoxPrefab: {fileID: 7419741657606723575, guid: fcde6471590f3af45ab81f9adc5f8fd7, type: 3}
+  statusText: {fileID: 1232401462}
+  loadingIcon: {fileID: 2131719316}
+  anchorMode: 0
+  spatialAnchorPrefab: {fileID: 7011814298867290955, guid: 6b375e879b1134b4d8f73e698cb23513, type: 3}
+  environmentRaycastManager: {fileID: 1309603985}
+  pollingMaxRetries: 20
+  pollingIntervalSeconds: 1
+--- !u!4 &1988061442
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1988061440}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1995111797
 GameObject:
   m_ObjectHideFlags: 0
@@ -12264,6 +12327,7 @@ SceneRoots:
   - {fileID: 478312663}
   - {fileID: 1568067563}
   - {fileID: 1601542821}
+  - {fileID: 1988061442}
   - {fileID: 595262268}
   - {fileID: 1309603984}
   - {fileID: 251001463}

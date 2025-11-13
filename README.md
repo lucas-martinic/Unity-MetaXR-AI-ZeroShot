@@ -70,21 +70,22 @@ Other field descriptions that are already assigned:
    - If you want to test the "Spatial Label 3D" anchor mode (the one shown in the video above), you must build the scene to your Quest 3 device.
 
 ## 🛠️ How It Works (Under the Hood)
+The flow is the same as it was with Florence-2, but now it uses a local Grounding Dino server.
+
 1) Image encoding
-   - `EncodeTextureToJPG(Texture)` converts the `sourceTexture.texture` into JPEG bytes and base64-embeds it in HTML `<img src="data:image/jpeg;base64,..." />`.
+   - `EncodeTextureToJPG(Texture)` converts the `sourceTexture.texture` into JPEG bytes and then into a base64 string.
 
 2) Prompt construction
-   - `Florence2Task` maps to Florence-2 tags, e.g. `<OD>` for Object Detection, `<CAPTION>`, etc.
-   - For text-conditional tasks (e.g., `<CAPTION_TO_PHRASE_GROUNDING>`, `<OPEN_VOCABULARY_DETECTION>`), your `Text Prompt` is appended after the tag.
+   - A JSON payload is created with the base64 image data and the text prompt for Grounding Dino.
 
 3) Request/Response
-   - HTTP POST to the NVIDIA endpoint with `Authorization: Bearer <apiKey>` and `Accept: application/zip`.
-   - The ZIP contains `*.response` JSON and possibly `overlay.png`.
-   - JSON is deserialized into `Florence2Response` → `Choices[0].Message.Entities` with `bboxes` and `labels` (when applicable).
+   - An HTTP POST request is sent to the local Grounding Dino server.
+   - The server returns a JSON response containing the detected objects, including their bounding boxes (`bboxes`) and labels (`labels`).
+   - The JSON is deserialized into `GroundingDinoResponse`.
 
 4) Visuals
-   - 2D: Converts Florence coordinates `[x1, y1, x2, y2]` to width/height and spawns the bounding box prefab under `BoundingBoxContainer`, scaled to `Result Image` size.
-   - 3D: Projects box center to a world-space ray and uses `EnvironmentRaycastManager.Raycast` to place an anchor prefab at the hit point, labeled with the detection class.
+   - 2D: Converts Grounding Dino coordinates `[x1, y1, x2, y2]` to width/height and spawns the bounding box prefab under `BoundingBoxContainer`, scaled to `Result Image` size.
+   - 3D: Projects the center of the bounding box to a world-space ray and uses `EnvironmentRaycastManager.Raycast` to place an anchor prefab at the hit point, labeled with the detection class.
 
 ## ⚠️ Limitations
 - Because requests are network-bound, latency can cause pose drift relative to the original capture. If you move, the raycast from the detected 2D box center may no longer intersect the same real-world surface.
@@ -108,14 +109,7 @@ Other field descriptions that are already assigned:
 - Do not commit your API key. Keep the `ApiConfig` asset out of version control or remove the key before committing. The Gitignore of the project will leave out /Assets/XR-AI-Florence2/Data/ApiConfig.asset
 
 ## 📚 References
-- Microsoft Florence-2: https://huggingface.co/microsoft/Florence-2-large
-- NVIDIA AI API (VLM Florence-2): https://build.nvidia.com/
-
-## 🔎 Relevant Sources & Opportunities 
-
-- [SensAI Kits GitHub](https://github.com/XRBootcamp/SensAIKits) - Main hub for all XR AI kits 
-- [SensAI Hackademy](https://www.sensaihackademy.com/) - Early access program for courses and toolkits
-- [SensAI Hack](https://sensaihack.com/) - Upcoming hackathons where you can use the kits
+- Grounding Dino: https://github.com/IDEA-Research/GroundingDINO
 
 ## 📄 License
 MIT – Free to use, modify and learn from.
