@@ -1,8 +1,7 @@
 # Unity-MetaXR-AI-ZeroShot
-Unity project integrating Zero-Shot Object Detection models like Grounding DINO and Florence-2 (Vision-Language Model) via NVIDIA’s AI API, with an end-to-end controller and UI to run image understanding tasks in XR.
+Unity project integrating Zero-Shot Object Detection models like Grounding DINO and Florence-2 (Deprecated) via NVIDIA’s AI API, with an end-to-end controller and UI to run image understanding tasks in XR.
 
 > [!IMPORTANT]
-> This repository now integrates both **Grounding DINO** and **Florence-2** models through the NVIDIA build platform, making it a Zero-Shot detection repo. 
 > We recommend using **Grounding DINO** as Florence-2 has been temporarily removed from the NVIDIA build platform.
 
 ![florence-xr-Trim-Trim-ezgif com-optimize](https://github.com/user-attachments/assets/429c9837-574e-4857-8843-1727167f73c3)
@@ -10,19 +9,19 @@ Unity project integrating Zero-Shot Object Detection models like Grounding DINO 
 ## 🔎 Overview
 - This project calls Zero-Shot models through NVIDIA’s hosted endpoint and parses the response to draw 2D bounding boxes or spawn 3D anchors in the scene.
 - **Grounding DINO:** A powerful open-vocabulary object detector that can identify a wide range of objects based on text prompts.
-- **Florence-2:** A multi-task vision-language model by Microsoft that supports captioning, detection, OCR, and more. (Currently unavailable on NVIDIA's platform).
+- [Deprecated] **Florence-2:** A multi-task vision-language model by Microsoft that supports captioning, detection, OCR, and more. (Currently unavailable on NVIDIA's platform).
 
 ## 📁 Key Paths
 - Scene: `Assets/XR-AI-ZeroShot/Scenes/XR-AI-ZeroShot.unity`
 - Controllers: 
   - `Assets/XR-AI-ZeroShot/Scripts/GroundingDinoController.cs`
-  - `Assets/XR-AI-ZeroShot/Scripts/Florence2Controller.cs`
+  - [Deprecated] `Assets/XR-AI-ZeroShot/Scripts/Florence2Controller.cs`
 - API Config asset class: `Assets/XR-AI-ZeroShot/Scripts/ApiConfig.cs`
 
 ## ✅ What’s Implemented
 - **Grounding DINO:**
   - `OpenVocabularyDetection`: Detects objects based on a text prompt.
-- **Florence-2 Tasks** (enumerated in `Florence2Task`):
+- [Deprecated] **Florence-2 Tasks** (enumerated in `Florence2Task`):
   - Caption, DetailedCaption, MoreDetailedCaption
   - ObjectDetection
   - DenseRegionCaption, RegionProposal
@@ -40,7 +39,7 @@ Unity project integrating Zero-Shot Object Detection models like Grounding DINO 
 
 ## ☁️ NVIDIA Endpoint
 - **Grounding DINO URL:** `https://ai.api.nvidia.com/v1/vlm/grounding-dino`
-- **Florence-2 URL:** `https://ai.api.nvidia.com/v1/vlm/microsoft/florence-2`
+- [Deprecated] **Florence-2 URL:** `https://ai.api.nvidia.com/v1/vlm/microsoft/florence-2`
 - Auth: Bearer token in `Authorization` header.
 - Content-Type: `application/json`
 - Accept: `application/json` for Grounding DINO, `application/zip` for Florence-2.
@@ -58,7 +57,7 @@ Unity project integrating Zero-Shot Object Detection models like Grounding DINO 
    - `Assets/XR-AI-ZeroShot/Scenes/XR-AI-ZeroShot.unity`.
 
 4) Assign the Controller fields:
-   - Select the `GroundingDinoController` or `Florence2Controller` in the scene hierarchy.
+   - Select the `GroundingDinoController` or [Deprecated] `Florence2Controller` in the scene hierarchy.
    - `Api Configuration`: assign the ScriptableObject you created.
    - Optional
      - `Anchor Mode`: BoundingBox2D, SpatialAnchor3D, or Both.
@@ -87,12 +86,12 @@ Other field descriptions that are already assigned:
 
 2) Prompt construction
    - **Grounding DINO:** The `Text Prompt` is sent directly. The model excels at open-vocabulary detection, allowing for descriptive and flexible prompts. You can specify multiple items to detect by separating them with commas (e.g., "car, bike, person"). It also understands relative descriptions, such as "the tallest cat" or "the person on the left."
-   - **Florence-2:** `Florence2Task` maps to Florence-2 tags, e.g. `<OD>` for Object Detection. For text-conditional tasks, your `Text Prompt` is appended after the tag.
+   - [Deprecated] **Florence-2:** `Florence2Task` maps to Florence-2 tags, e.g. `<OD>` for Object Detection. For text-conditional tasks, your `Text Prompt` is appended after the tag.
 
 3) Request/Response
    - HTTP POST to the corresponding NVIDIA endpoint with `Authorization: Bearer <apiKey>`.
    - **Grounding DINO:** The response is a JSON object with `bboxes` and `labels`.
-   - **Florence-2:** The response is a ZIP containing `*.response` JSON and possibly `overlay.png`. The JSON is deserialized into `Florence2Response` → `Choices[0].Message.Entities`.
+   - [Deprecated] **Florence-2:** The response is a ZIP containing `*.response` JSON and possibly `overlay.png`. The JSON is deserialized into `Florence2Response` → `Choices[0].Message.Entities`.
 
 4) Visuals
    - 2D: Converts model coordinates to width/height and spawns the bounding box prefab under `BoundingBoxContainer`, scaled to `Result Image` size.
@@ -102,11 +101,6 @@ Other field descriptions that are already assigned:
 - Because requests are network-bound, latency can cause pose drift relative to the original capture. If you move, the raycast from the detected 2D box center may no longer intersect the same real-world surface.
 - Tips:
   - Prefer testing while stationary, or on a tripod/stand when possible.
-
-## 🧩 Extending
-- **Florence-2 Segmentation:** Use `overlay.png` (if returned) or the `Entities` segmentation data to render masks or outlines.
-- **OCR:** Display `Message.Content`/entities in the UI, draw text regions.
-- **Region tasks:** Use `regionOfInterest` in prompts and visualize per-task outputs.
 
 ## 🧯 Troubleshooting
 - "API Key or Source Image is missing": Ensure the ApiConfig asset is assigned and `sourceTexture.texture` is valid.
@@ -118,10 +112,6 @@ Other field descriptions that are already assigned:
 
 ## 🔐 Security
 - Do not commit your API key. Keep the `ApiConfig` asset out of version control or remove the key before committing. The Gitignore of the project will leave out /Assets/XR-AI-Florence2/Data/ApiConfig.asset
-
-## 📚 References
-- Microsoft Florence-2: https://huggingface.co/microsoft/Florence-2-large
-- NVIDIA AI API (VLM Florence-2): https://build.nvidia.com/
 
 ## 📄 License
 MIT – Free to use, modify and learn from.
